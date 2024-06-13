@@ -118,5 +118,64 @@ WHERE Type_local = 'Appartement' AND Total_piece &gt; 4 AND Surface_carrez != 0 
 GROUP BY &quot;Région&quot;
 ORDER BY &quot;Prix au m² - Appart 4 pièces&quot; DESC;
 
+-- Liste des communes ayant eu au moins 50 ventes au 1er trimestre
+-- Solution 1
+WITH
+V1Trim AS(
+SELECT Nom_commune, count(id_vente) AS &quot;Nb de Vente&quot;
+FROM Vente
+JOIN Bien ON Bien.id_bien = Vente.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE date BETWEEN &quot;2020-01-01&quot; AND &quot;2020-03-31&quot;
+GROUP By Nom_commune)
+SELECT Nom_commune AS &quot;Commune&quot;,&quot;Nb de Vente&quot;
+FROM V1Trim
+WHERE &quot;Nb de Vente&quot; &gt;= 50
+ORDER BY &quot;Nb de Vente&quot; DESC;
+-- Solution 2 avec HAVING
+SELECT Nom_commune AS &quot;Commune&quot;, count(Vente.id_vente) AS &quot;Nb_de_Vente&quot;
+FROM Bien
+JOIN Vente ON Bien.id_bien = Vente.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE date BETWEEN '2020-01-01' AND '2020-03-31'
+GROUP BY Nom_commune
+HAVING &quot;Nb_de_Vente&quot; &gt;= 50
+ORDER BY &quot;Nb_de_Vente&quot; DESC;
 
-</sql><current_tab id="0"/></tab_sql></sqlb_project>
+-- Différence en pourcentage du prix au mètre carré entre un appartement de 2 pièces et un appartement de 3 pièces
+WITH
+PrixT2 AS(
+SELECT round(avg(valeur / Surface_carrez),2) as &quot;Prix m² T2&quot;
+From Bien
+JOIN Vente USING (id_bien)
+WHERE Type_local= 'Appartement' and Total_piece = 2),
+PrixT3 AS (
+SELECT round(avg(valeur / Surface_carrez),2) as &quot;Prix m² T3&quot;
+From Bien
+JOIN Vente USING (id_bien)
+WHERE Type_local= 'Appartement' and Total_piece = 3)
+SELECT round((&quot;Prix m² T3&quot;-&quot;Prix m² T2&quot;)/&quot;Prix m² T2&quot; * 100,3) AS &quot;DIff % prix m2&quot;
+FROM PrixT2,PrixT3;
+-- Autre possibilité
+SELECT 
+    ROUND(
+        (
+            (SELECT AVG(valeur / Surface_carrez) 
+             FROM Bien 
+             JOIN Vente USING (id_bien) 
+             WHERE Type_local = 'Appartement' AND Total_piece = 3)
+            -
+            (SELECT AVG(valeur / Surface_carrez) 
+             FROM Bien 
+             JOIN Vente USING (id_bien) 
+             WHERE Type_local = 'Appartement' AND Total_piece = 2)
+        ) 
+        / 
+        (SELECT AVG(valeur / Surface_carrez) 
+         FROM Bien 
+         JOIN Vente USING (id_bien) 
+         WHERE Type_local = 'Appartement' AND Total_piece = 2) 
+        * 100, 
+    3) AS Diff_pourcentage_prix_m2;
+
+-- Les moyennes de valeurs foncières pour le top 3 des communes des départements 6, 13, 33, 59 et 69</sql><current_tab id="0"/></tab_sql></sqlb_project>
