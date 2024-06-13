@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/DATA-ANALYST/03 - Projet 3 - Créez et utilisez une base de données immobilière avec SQL/P3 - version du 15-02-2023/P3_Bdd_Immo.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2987"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,5:mainVente"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Bien" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="72"/><column index="2" value="244"/><column index="3" value="79"/><column index="4" value="50"/><column index="5" value="96"/><column index="6" value="258"/><column index="7" value="107"/><column index="8" value="136"/><column index="9" value="124"/><column index="10" value="104"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Region" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="80"/><column index="2" value="213"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Vente" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="83"/><column index="2" value="72"/><column index="3" value="91"/><column index="4" value="84"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- Nombre total d’appartements vendus au 1er trimestre 2020
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="E:/DATA-ANALYST/03 - Projet 3 - Créez et utilisez une base de données immobilière avec SQL/P3 - version du 15-02-2023/P3_Bdd_Immo.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2987"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:mainCommune"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Bien" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="72"/><column index="2" value="244"/><column index="3" value="79"/><column index="4" value="50"/><column index="5" value="96"/><column index="6" value="258"/><column index="7" value="107"/><column index="8" value="136"/><column index="9" value="124"/><column index="10" value="104"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Commune" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="7" mode="0"/></sort><column_widths><column index="1" value="244"/><column index="2" value="80"/><column index="3" value="79"/><column index="4" value="84"/><column index="5" value="90"/><column index="6" value="228"/><column index="7" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Region" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="80"/><column index="2" value="213"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Vente" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="83"/><column index="2" value="72"/><column index="3" value="91"/><column index="4" value="84"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- Nombre total d’appartements vendus au 1er trimestre 2020
 SELECT count(DISTINCT id_vente) AS &quot;Nb d'appartements vendus - 1er trimestre 2020&quot;
 FROM Vente
 JOIN Bien USING (id_bien)
 WHERE Type_local = &quot;Appartement&quot; AND date BETWEEN '2020-01-01' AND '2020-03-31';
-
+
 -- Le nombre de ventes d’appartement par région pour le 1er semestre 2020
 SELECT Commune.CODREG AS &quot;Code Région&quot;, Region.Reg_nom AS &quot;Région&quot;, count(DISTINCT Bien.id_bien) AS &quot;Nb de ventes&quot;
 FROM Bien
@@ -13,169 +13,224 @@ JOIN Region ON Region.CODREG = Commune.CODREG
 WHERE Type_local = 'Appartement' AND date BETWEEN '01-01-2020' AND '30-06-2020'
 GROUP BY Commune.CODREG
 ORDER BY &quot;Nb de ventes&quot; DESC;
-
+
 -- Proportion des ventes d’appartements par le nombre de pièces
-SELECT Total_piece AS &quot;Nb de pièces&quot;, 
-round(count(id_vente)/
-(SELECT round(count(id_vente),2) FROM Vente
-JOIN Bien Using (id_bien) WHERE Type_local='Appartement')
-*100,2) AS &quot;% des Ventes&quot;
-FROM Bien
-JOIN Vente USING (id_bien)
-WHERE Type_local = 'Appartement'
-GROUP By Bien.Total_piece
-ORDER BY &quot;% des Ventes&quot; DESC;
-
--- Liste des 10 départements où le prix du mètre carré est le plus élevé
-SELECT CODDEP AS &quot;Département&quot;,
-round(avg(valeur / Surface_carrez),2) AS &quot;Prix Moyen au m²&quot;
-FROM Bien
-JOIN Vente USING (id_bien)
-JOIN Commune USING (id_codedep_codecommune)
-WHERE Surface_carrez != 0 AND CODDEP IS NOT NULL
-GROUP BY CODDEP
-ORDER BY &quot;Prix Moyen au m²&quot; DESC
-LIMIT 10;
-
-
--- Prix moyen du mètre carré d’une maison en Île-de-France
-SELECT round(avg(valeur / Surface_carrez),2) AS &quot;Prix Moyen au m²&quot;
-FROM Bien
-JOIN Vente USING (id_bien)
-JOIN Commune USING (id_codedep_codecommune)
-JOIN Region Using (CODREG)
-WHERE Reg_nom = 'Ile-de-France' AND Type_local = 'Maison'
--- ATTENTION: Jointures complexes ==&gt; Utiliser JOIN ON pour résultat correct
--- Ajout de la Région et dy type de local pour une meilleure visu
-SELECT Reg_nom AS &quot;Région&quot;, Type_local AS &quot;Type de bien&quot;,
-round(avg(valeur / Surface_carrez),2) AS &quot;Prix Moyen au m²&quot;
-FROM Bien
-JOIN Vente on Bien.id_bien = Vente.id_bien
-JOIN Commune on Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
-JOIN Region on Commune.CODREG = Region.CODREG
-WHERE Reg_nom = 'Ile-de-France' AND Type_local = 'Maison'
-
-
--- Liste des 10 appartements les plus chers avec la région et le nombre de mètres carrés
-SELECT Bien.id_bien AS &quot;Référence du bien&quot;, round(valeur, 0) as &quot;Prix du bien&quot;, 
--- Ajout du prix au m²
-round(valeur / Surface_carrez,2) AS &quot;Prix au m²&quot;,
-round(Surface_carrez,2) AS &quot;Surface m²&quot;, Reg_nom AS &quot;Région&quot;, Nom_commune AS &quot;Commune&quot;
-FROM Bien
-JOIN Vente on vente.id_bien = Bien.id_bien
-JOIN Commune on Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
-JOIN Region on Region.CODREG = Commune.CODREG
-WHERE Type_local = 'Appartement' and valeur != 0
-ORDER BY &quot;Prix du bien&quot; DESC
-LIMIT 10;
-
--- Taux d’évolution du nombre de ventes entre le premier et le second trimestre de 2020
-WITH
-trim1 AS (
-SELECT round(count(id_vente),0) As vente1
-FROM Vente
-WHERE date BETWEEN '2020-01-01' AND '2020-03-31'),
-trim2 AS (
-SELECT round(count(id_vente),0) AS vente2
-FROM Vente
-WHERE date BETWEEN '2020-04-01' AND '2020-06-30')
-SELECT round(((vente2-vente1) / vente1 *100),2) As &quot;Evolution&quot;, vente1 As &quot;1erTrim&quot;,
-vente2 AS &quot;2ndTrim&quot;
-From trim1, trim2;
--- Pour éviter la division par 0 
-WITH
-trim1 AS (
-    SELECT count(id_vente) AS vente1
-    FROM Vente
-    WHERE date BETWEEN '2020-01-01' AND '2020-03-31'
-),
-trim2 AS (
-    SELECT count(id_vente) AS vente2
-    FROM Vente
-    WHERE date BETWEEN '2020-04-01' AND '2020-06-30'
-)
-SELECT 
-    round(
-        CASE 
-            WHEN vente1 = 0 THEN 0 
-            ELSE ((vente2 - vente1) * 100.0 / vente1)
-        END, 2
-    ) AS &quot;Evolution&quot;,
-    vente1 AS &quot;1erTrim&quot;,
-    vente2 AS &quot;2ndTrim&quot;
-FROM 
-    trim1, trim2;
+SELECT Total_piece AS &quot;Nb de pièces&quot;, 
+round(count(id_vente)/
+(SELECT round(count(id_vente),2) FROM Vente
+JOIN Bien Using (id_bien) WHERE Type_local='Appartement')
+*100,2) AS &quot;% des Ventes&quot;
+FROM Bien
+JOIN Vente USING (id_bien)
+WHERE Type_local = 'Appartement'
+GROUP By Bien.Total_piece
+ORDER BY &quot;% des Ventes&quot; DESC;
+
+-- Liste des 10 départements où le prix du mètre carré est le plus élevé
+SELECT CODDEP AS &quot;Département&quot;,
+round(avg(valeur / Surface_carrez),2) AS &quot;Prix Moyen au m²&quot;
+FROM Bien
+JOIN Vente USING (id_bien)
+JOIN Commune USING (id_codedep_codecommune)
+WHERE Surface_carrez != 0 AND CODDEP IS NOT NULL
+GROUP BY CODDEP
+ORDER BY &quot;Prix Moyen au m²&quot; DESC
+LIMIT 10;
+
+
+-- Prix moyen du mètre carré d’une maison en Île-de-France
+SELECT round(avg(valeur / Surface_carrez),2) AS &quot;Prix Moyen au m²&quot;
+FROM Bien
+JOIN Vente USING (id_bien)
+JOIN Commune USING (id_codedep_codecommune)
+JOIN Region Using (CODREG)
+WHERE Reg_nom = 'Ile-de-France' AND Type_local = 'Maison'
+-- ATTENTION: Jointures complexes ==&gt; Utiliser JOIN ON pour résultat correct
+-- Ajout de la Région et dy type de local pour une meilleure visu
+SELECT Reg_nom AS &quot;Région&quot;, Type_local AS &quot;Type de bien&quot;,
+round(avg(valeur / Surface_carrez),2) AS &quot;Prix Moyen au m²&quot;
+FROM Bien
+JOIN Vente on Bien.id_bien = Vente.id_bien
+JOIN Commune on Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+JOIN Region on Commune.CODREG = Region.CODREG
+WHERE Reg_nom = 'Ile-de-France' AND Type_local = 'Maison'
+
+
+-- Liste des 10 appartements les plus chers avec la région et le nombre de mètres carrés
+SELECT Bien.id_bien AS &quot;Référence du bien&quot;, round(valeur, 0) as &quot;Prix du bien&quot;, 
+-- Ajout du prix au m²
+round(valeur / Surface_carrez,2) AS &quot;Prix au m²&quot;,
+round(Surface_carrez,2) AS &quot;Surface m²&quot;, Reg_nom AS &quot;Région&quot;, Nom_commune AS &quot;Commune&quot;
+FROM Bien
+JOIN Vente on vente.id_bien = Bien.id_bien
+JOIN Commune on Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+JOIN Region on Region.CODREG = Commune.CODREG
+WHERE Type_local = 'Appartement' and valeur != 0
+ORDER BY &quot;Prix du bien&quot; DESC
+LIMIT 10;
+
+-- Taux d’évolution du nombre de ventes entre le premier et le second trimestre de 2020
+WITH
+trim1 AS (
+SELECT round(count(id_vente),0) As vente1
+FROM Vente
+WHERE date BETWEEN '2020-01-01' AND '2020-03-31'),
+trim2 AS (
+SELECT round(count(id_vente),0) AS vente2
+FROM Vente
+WHERE date BETWEEN '2020-04-01' AND '2020-06-30')
+SELECT round(((vente2-vente1) / vente1 *100),2) As &quot;Evolution&quot;, vente1 As &quot;1erTrim&quot;,
+vente2 AS &quot;2ndTrim&quot;
+From trim1, trim2;
+-- Pour éviter la division par 0 
+WITH
+trim1 AS (
+    SELECT count(id_vente) AS vente1
+    FROM Vente
+    WHERE date BETWEEN '2020-01-01' AND '2020-03-31'
+),
+trim2 AS (
+    SELECT count(id_vente) AS vente2
+    FROM Vente
+    WHERE date BETWEEN '2020-04-01' AND '2020-06-30'
+)
+SELECT 
+    round(
+        CASE 
+            WHEN vente1 = 0 THEN 0 
+            ELSE ((vente2 - vente1) * 100.0 / vente1)
+        END, 2
+    ) AS &quot;Evolution&quot;,
+    vente1 AS &quot;1erTrim&quot;,
+    vente2 AS &quot;2ndTrim&quot;
+FROM 
+    trim1, trim2;
+
+	
+-- Le classement des régions par rapport au prix au mètre carré des appartement de plus de 4 pièces
+SELECT Reg_nom AS &quot;Région&quot;,
+round(avg(valeur / Surface_carrez),2) AS &quot;Prix au m² - Appart 4 pièces&quot;
+FROM Bien
+JOIN Vente ON Bien.id_bien = Vente.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+JOIN Region ON Region.CODREG = Commune.CODREG
+WHERE Type_local = 'Appartement' AND Total_piece &gt; 4 AND Surface_carrez != 0 -- Si doute sur le champs 'Surface_carrez'
+GROUP BY &quot;Région&quot;
+ORDER BY &quot;Prix au m² - Appart 4 pièces&quot; DESC;
+
+-- Liste des communes ayant eu au moins 50 ventes au 1er trimestre
+-- Solution 1
+WITH
+V1Trim AS(
+SELECT Nom_commune, count(id_vente) AS &quot;Nb de Vente&quot;
+FROM Vente
+JOIN Bien ON Bien.id_bien = Vente.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE date BETWEEN &quot;2020-01-01&quot; AND &quot;2020-03-31&quot;
+GROUP By Nom_commune)
+SELECT Nom_commune AS &quot;Commune&quot;,&quot;Nb de Vente&quot;
+FROM V1Trim
+WHERE &quot;Nb de Vente&quot; &gt;= 50
+ORDER BY &quot;Nb de Vente&quot; DESC;
+-- Solution 2 avec HAVING
+SELECT Nom_commune AS &quot;Commune&quot;, count(Vente.id_vente) AS &quot;Nb_de_Vente&quot;
+FROM Bien
+JOIN Vente ON Bien.id_bien = Vente.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE date BETWEEN '2020-01-01' AND '2020-03-31'
+GROUP BY Nom_commune
+HAVING &quot;Nb_de_Vente&quot; &gt;= 50
+ORDER BY &quot;Nb_de_Vente&quot; DESC;
+
+-- Différence en pourcentage du prix au mètre carré entre un appartement de 2 pièces et un appartement de 3 pièces
+WITH
+PrixT2 AS(
+SELECT round(avg(valeur / Surface_carrez),2) as &quot;Prix m² T2&quot;
+From Bien
+JOIN Vente USING (id_bien)
+WHERE Type_local= 'Appartement' and Total_piece = 2),
+PrixT3 AS (
+SELECT round(avg(valeur / Surface_carrez),2) as &quot;Prix m² T3&quot;
+From Bien
+JOIN Vente USING (id_bien)
+WHERE Type_local= 'Appartement' and Total_piece = 3)
+SELECT round((&quot;Prix m² T3&quot;-&quot;Prix m² T2&quot;)/&quot;Prix m² T2&quot; * 100,3) AS &quot;DIff % prix m2&quot;
+FROM PrixT2,PrixT3;
+-- Autre possibilité
+SELECT 
+    ROUND(
+        (
+            (SELECT AVG(valeur / Surface_carrez) 
+             FROM Bien 
+             JOIN Vente USING (id_bien) 
+             WHERE Type_local = 'Appartement' AND Total_piece = 3)
+            -
+            (SELECT AVG(valeur / Surface_carrez) 
+             FROM Bien 
+             JOIN Vente USING (id_bien) 
+             WHERE Type_local = 'Appartement' AND Total_piece = 2)
+        ) 
+        / 
+        (SELECT AVG(valeur / Surface_carrez) 
+         FROM Bien 
+         JOIN Vente USING (id_bien) 
+         WHERE Type_local = 'Appartement' AND Total_piece = 2) 
+        * 100, 
+    3) AS Diff_pourcentage_prix_m2;
 
 	
--- Le classement des régions par rapport au prix au mètre carré des appartement de plus de 4 pièces
-SELECT Reg_nom AS &quot;Région&quot;,
-round(avg(valeur / Surface_carrez),2) AS &quot;Prix au m² - Appart 4 pièces&quot;
-FROM Bien
-JOIN Vente ON Bien.id_bien = Vente.id_bien
-JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
-JOIN Region ON Region.CODREG = Commune.CODREG
-WHERE Type_local = 'Appartement' AND Total_piece &gt; 4 AND Surface_carrez != 0 -- Si doute sur le champs 'Surface_carrez'
-GROUP BY &quot;Région&quot;
-ORDER BY &quot;Prix au m² - Appart 4 pièces&quot; DESC;
-
--- Liste des communes ayant eu au moins 50 ventes au 1er trimestre
--- Solution 1
+	
+-- Les moyennes de valeurs foncières pour le top 3 des communes des départements 6, 13, 33, 59 et 69
 WITH
-V1Trim AS(
-SELECT Nom_commune, count(id_vente) AS &quot;Nb de Vente&quot;
-FROM Vente
-JOIN Bien ON Bien.id_bien = Vente.id_bien
-JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
-WHERE date BETWEEN &quot;2020-01-01&quot; AND &quot;2020-03-31&quot;
-GROUP By Nom_commune)
-SELECT Nom_commune AS &quot;Commune&quot;,&quot;Nb de Vente&quot;
-FROM V1Trim
-WHERE &quot;Nb de Vente&quot; &gt;= 50
-ORDER BY &quot;Nb de Vente&quot; DESC;
--- Solution 2 avec HAVING
-SELECT Nom_commune AS &quot;Commune&quot;, count(Vente.id_vente) AS &quot;Nb_de_Vente&quot;
+Mvf AS (
+SELECT round(avg(Valeur),2) AS Moy_Val, Nom_commune, CODDEP
 FROM Bien
-JOIN Vente ON Bien.id_bien = Vente.id_bien
-JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
-WHERE date BETWEEN '2020-01-01' AND '2020-03-31'
-GROUP BY Nom_commune
-HAVING &quot;Nb_de_Vente&quot; &gt;= 50
-ORDER BY &quot;Nb_de_Vente&quot; DESC;
-
--- Différence en pourcentage du prix au mètre carré entre un appartement de 2 pièces et un appartement de 3 pièces
-WITH
-PrixT2 AS(
-SELECT round(avg(valeur / Surface_carrez),2) as &quot;Prix m² T2&quot;
-From Bien
-JOIN Vente USING (id_bien)
-WHERE Type_local= 'Appartement' and Total_piece = 2),
-PrixT3 AS (
-SELECT round(avg(valeur / Surface_carrez),2) as &quot;Prix m² T3&quot;
-From Bien
-JOIN Vente USING (id_bien)
-WHERE Type_local= 'Appartement' and Total_piece = 3)
-SELECT round((&quot;Prix m² T3&quot;-&quot;Prix m² T2&quot;)/&quot;Prix m² T2&quot; * 100,3) AS &quot;DIff % prix m2&quot;
-FROM PrixT2,PrixT3;
--- Autre possibilité
+JOIN Vente on Vente.id_bien = Bien.id_bien
+JOIN Commune in Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE CODDEP in ('06','13','33','59','69') -- CODDEP =&gt; VARCHAR
+GROUP BY CODDEP,Nom_commune)
 SELECT 
-    ROUND(
-        (
-            (SELECT AVG(valeur / Surface_carrez) 
-             FROM Bien 
-             JOIN Vente USING (id_bien) 
-             WHERE Type_local = 'Appartement' AND Total_piece = 3)
-            -
-            (SELECT AVG(valeur / Surface_carrez) 
-             FROM Bien 
-             JOIN Vente USING (id_bien) 
-             WHERE Type_local = 'Appartement' AND Total_piece = 2)
-        ) 
-        / 
-        (SELECT AVG(valeur / Surface_carrez) 
-         FROM Bien 
-         JOIN Vente USING (id_bien) 
-         WHERE Type_local = 'Appartement' AND Total_piece = 2) 
-        * 100, 
-    3) AS Diff_pourcentage_prix_m2;
 
--- Les moyennes de valeurs foncières pour le top 3 des communes des départements 6, 13, 33, 59 et 69</sql><current_tab id="0"/></tab_sql></sqlb_project>
+WITH Mvf AS (
+SELECT avg(valeur) AS Moy_Val, Nom_commune, CODDEP
+FROM Bien
+JOIN Vente on Vente.id_bien = Bien.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE CODDEP IN ('06','13','33','59','69') -- CODDEP =&gt; VARCHAR
+GROUP BY CODDEP,Nom_commune)
+SELECT CODDEP AS &quot;Département&quot;, Nom_commune AS &quot;Commune&quot;,
+round(Moy_Val,2) AS &quot;Valeur Fonçière moyenne&quot;
+FROM (
+SELECT CODDEP, Nom_commune, Moy_Val,
+RANK() OVER (PARTITION BY CODDEP ORDER BY Moy_Val DESC) Rang
+FROM Mvf) result
+WHERE Rang &lt;=3;
+-- ou
+WITH Mvf AS (
+SELECT avg(valeur) AS Moy_Val, Nom_commune, CODDEP
+FROM Bien
+JOIN Vente on Vente.id_bien = Bien.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE CODDEP IN ('06','13','33','59','69') -- CODDEP =&gt; VARCHAR
+GROUP BY Nom_commune)
+SELECT CODDEP AS &quot;Département&quot;, Nom_commune AS &quot;Commune&quot;,
+round(Moy_Val,2) AS &quot;Valeur Fonçière moyenne&quot;
+FROM (
+SELECT CODDEP, Nom_commune, Moy_Val,
+row_number() OVER (PARTITION BY CODDEP ORDER BY Moy_Val DESC) Rang
+FROM Mvf) result
+WHERE Rang &lt;=3;
+   
+   
+   
+-- Les 20 communes avec le plus de transactions pour 1000 habitants pour les communes qui dépassent les 10 000 habitants
+
+SELECT Nom_commune AS &quot;Commune&quot;,
+round(round((count(id_vente)) * 1000) / PTOT,2) AS &quot;Transaction&quot;
+FROM Bien
+JOIN Vente on Vente.id_bien = Bien.id_bien
+JOIN Commune ON Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
+WHERE PTOT &gt; 10000 AND PTOT !=0
+GROUP BY &quot;Commune&quot;
+ORDER BY &quot;Transaction&quot; DESC
+LIMIT 20;</sql><current_tab id="0"/></tab_sql></sqlb_project>
