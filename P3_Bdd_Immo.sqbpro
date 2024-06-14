@@ -53,9 +53,10 @@ FROM Bien
 JOIN Vente on Bien.id_bien = Vente.id_bien
 JOIN Commune on Commune.id_codedep_codecommune = Bien.id_codedep_codecommune
 JOIN Region on Commune.CODREG = Region.CODREG
-WHERE Reg_nom = 'Ile-de-France' AND Type_local = 'Maison';
+WHERE Reg_nom = 'Ile-de-France' AND Type_local = 'Maison'
 
--- Prix moyen du mètre carré d’une maison par Région
+
+-- Prix moyen du mètre carré d’une maison par Région --
 WITH
 Appart AS (
     SELECT Reg_nom AS &quot;Région&quot;, round(avg(valeur / Surface_carrez), 2) AS &quot;Appartement €/m²&quot;
@@ -122,18 +123,7 @@ ORDER BY &quot;Prix du bien&quot; DESC
 LIMIT 10;
 
 -- Taux d’évolution du nombre de ventes entre le premier et le second trimestre de 2020
-WITH
-trim1 AS (
-SELECT round(count(id_vente),0) As vente1
-FROM Vente
-WHERE date BETWEEN '2020-01-01' AND '2020-03-31'),
-trim2 AS (
-SELECT round(count(id_vente),0) AS vente2
-FROM Vente
-WHERE date BETWEEN '2020-04-01' AND '2020-06-30')
-SELECT round(((vente2-vente1) / vente1 *100),2) As &quot;Evolution&quot;, vente1 As &quot;1erTrim&quot;,
-vente2 AS &quot;2ndTrim&quot;
-From trim1, trim2;
+ 
 -- Pour éviter la division par 0 
 WITH
 trim1 AS (
